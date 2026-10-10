@@ -1,0 +1,10 @@
+
+# Lab 2 generated files
+lab2/src/swap/swap
+lab2/src/revert_string/revert
+lab2/src/revert_string/revert_static
+lab2/src/revert_string/revert_dynamic
+lab2/src/revert_string/*.o
+lab2/src/revert_string/*.a
+lab2/src/revert_string/*.so
+lab2/src/tests/tests

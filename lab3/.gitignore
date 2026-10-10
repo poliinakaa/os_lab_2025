@@ -1,0 +1,7 @@
+# Compiled files must not be committed
+*.o
+src/sequential_min_max
+src/parallel_min_max
+src/run_sequential
+src/tests
+.DS_Store

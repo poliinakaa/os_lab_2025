@@ -1,17 +1,30 @@
 CC=gcc
-CFLAGS=-I.
+CFLAGS=-I. -Wall -Wextra -std=c11
 
-sequential_min_max : utils.o find_min_max.o utils.h find_min_max.h
-	$(CC) -o sequential_min_max find_min_max.o utils.o sequential_min_max.c $(CFLAGS)
+.PHONY: all clean test
 
-parallel_min_max : utils.o find_min_max.o utils.h find_min_max.h
-	$(CC) -o parallel_min_max utils.o find_min_max.o parallel_min_max.c $(CFLAGS)
+all: sequential_min_max parallel_min_max run_sequential tests
 
-utils.o : utils.h
-	$(CC) -o utils.o -c utils.c $(CFLAGS)
+sequential_min_max: utils.o find_min_max.o sequential_min_max.c utils.h find_min_max.h
+	$(CC) $(CFLAGS) -o sequential_min_max find_min_max.o utils.o sequential_min_max.c
 
-find_min_max.o : utils.h find_min_max.h
-	$(CC) -o find_min_max.o -c find_min_max.c $(CFLAGS)
+parallel_min_max: utils.o find_min_max.o parallel_min_max.c utils.h find_min_max.h
+	$(CC) $(CFLAGS) -o parallel_min_max utils.o find_min_max.o parallel_min_max.c
 
-clean :
-	rm utils.o find_min_max.o sequential_min_max parallel_min_max
+run_sequential: run_sequential.c
+	$(CC) $(CFLAGS) -o run_sequential run_sequential.c
+
+tests: tests.c find_min_max.o find_min_max.h utils.h
+	$(CC) $(CFLAGS) -o tests tests.c find_min_max.o
+
+utils.o: utils.c utils.h
+	$(CC) $(CFLAGS) -o utils.o -c utils.c
+
+find_min_max.o: find_min_max.c utils.h find_min_max.h
+	$(CC) $(CFLAGS) -o find_min_max.o -c find_min_max.c
+
+test: tests
+	./tests
+
+clean:
+	rm -f utils.o find_min_max.o sequential_min_max parallel_min_max run_sequential tests
